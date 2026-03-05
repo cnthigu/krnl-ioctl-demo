@@ -1,0 +1,34 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.vcxproj.user
+*.VC.db
+*.VC.VC.opendb
+
+# Build outputs (WDK / driver)
+**/x64/
+**/ARM64/
+**/Debug/
+**/Release/
+*.obj
+*.pdb
+*.sys
+*.cat
+*.log
+*.tlog/
+*.lastbuildstate
+*.recipe
+*.Build.CppClean.log
+
+# INF gerado/alterado pelo build (mantém o .inf da pasta do projeto)
+x64/**/*.inf
+ARM64/**/*.inf
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
