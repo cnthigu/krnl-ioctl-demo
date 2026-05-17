@@ -18,7 +18,7 @@ int main()
         return 1;
     }
 
-    ULONG pid = GetPidByName(L"ac_client.exe");
+    ULONG pid = GetPidByName(L"notepad.exe");
 
     if (pid == 0)
     {
@@ -27,7 +27,7 @@ int main()
         return 1;
     }
 
-    ULONG64 baseKernel = GetModuleBaseDriver(hDevice, pid, L"ac_client.exe");
+    ULONG64 baseKernel = GetModuleBaseDriver(hDevice, pid, L"notepad.exe");
 
     if (baseKernel == 0)
     {
@@ -35,7 +35,7 @@ int main()
         return 2;
     }
 
-    ULONG_PTR addr = 0x00883DA8;
+    ULONG_PTR addr = 0x0000000;  // test addr
 
     ULONG_PTR value = 0;
 
