@@ -1,4 +1,4 @@
-#include "headers.h"
+#include "Includes.h"
 
 NTSTATUS CreateClose(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
@@ -113,6 +113,56 @@ NTSTATUS DeviceControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 		}
 		else
 			status = STATUS_BUFFER_TOO_SMALL;
+		break;
+	}
+
+	case GET_MODULE:
+	{
+		if (cbInputBufferLength >= sizeof(KERNEL_MODULE_REQUEST) &&
+			cbOutputBufferLength >= sizeof(KERNEL_MODULE_REQUEST) &&
+			pSystemBuffer != NULL)
+		{
+			PKERNEL_MODULE_REQUEST ModuleRequest = (PKERNEL_MODULE_REQUEST)pSystemBuffer;
+			PEPROCESS Process = NULL;
+
+			ModuleRequest->ModuleName[RTL_NUMBER_OF(ModuleRequest->ModuleName) - 1] = L'\0';
+
+			status = PsLookupProcessByProcessId((HANDLE)(ULONG_PTR)ModuleRequest->ProcessId, &Process);
+			if (!NT_SUCCESS(status))
+			{
+				DbgPrint("[+] GET_MODULE: PID %lu not found 0x%08X\n", ModuleRequest->ProcessId, status);
+				break;
+			}
+
+			UNICODE_STRING ModuleName;
+			RtlInitUnicodeString(&ModuleName, ModuleRequest->ModuleName);
+
+			ULONG64 base = GetModuleBasex64(Process, ModuleName);
+
+			ObfDereferenceObject(Process);
+
+			ModuleRequest->BaseAddress = base;
+			cbBytesReturned = sizeof(KERNEL_MODULE_REQUEST);
+
+			if (base != 0)
+			{
+				status = STATUS_SUCCESS;
+				DbgPrint("[+] GET_MODULE: PID %lu module %ws base 0x%llX\n",
+					ModuleRequest->ProcessId,
+					ModuleRequest->ModuleName,
+					(unsigned long long)base);
+			}
+			else
+			{
+				status = STATUS_NOT_FOUND;
+				DbgPrint("[+] GET_MODULE: module %ws not found in PID %lu\n",
+					ModuleRequest->ModuleName, ModuleRequest->ProcessId);
+			}
+		}
+		else
+		{
+			status = STATUS_BUFFER_TOO_SMALL;
+		}
 		break;
 	}
 
