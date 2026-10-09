@@ -10,7 +10,7 @@ The user-mode app opens `\\.\SimpleDriver` and sends requests through `DeviceIoC
 - `IOCTL_READ` / `IOCTL_WRITE`: read and write process memory.
 - `GET_MODULE`: finds a module base address through the target process PEB/LDR.
 
-The driver is in `kernel_mode/`; the client is in `user_mode/`.
+The driver is in `kernel_mode/`; the client is in `user_mode/`
 
 ## Demo
 
