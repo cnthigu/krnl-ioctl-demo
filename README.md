@@ -1,41 +1,25 @@
 # Windows Kernel IOCTL Demo
 
-Driver-user mode communication and process memory read/write via IOCTL
+Communicate with a Windows kernel driver and read/write process memory through IOCTLs
 
-## How it works
+## How does it work?
 
-This project demonstrates communication between a WDM kernel driver and a user-mode application using DeviceIoControl (IOCTL). The user-mode app opens the device via `\\.\SimpleDriver`, sends IOCTL codes with buffered data, and the driver processes requests in kernel space.
+The user-mode app opens `\\.\SimpleDriver` and sends requests through `DeviceIoControl`. The WDM driver handles them in kernel space using buffered I/O.
 
-**IOCTLs**
+- `IOCTL_ADD`: adds 1 to an integer.
+- `IOCTL_READ` / `IOCTL_WRITE`: read and write process memory.
+- `GET_MODULE`: finds a module base address through the target process PEB/LDR.
 
-| Code          | Description                                                                 |
-|---------------|-----------------------------------------------------------------------------|
-| IOCTL_ADD     | Sends an int, driver adds 1, returns (simple test)                          |
-| IOCTL_READ    | Reads memory from a process via MmCopyVirtualMemory                         |
-| IOCTL_WRITE   | Writes memory to a process                                                  |
-| GET_MODULE    | Returns the base address of a module by walking the target process PEB/LDR  |
+The driver is in `kernel_mode/`; the client is in `user_mode/`.
 
 ## Demo
 
-![IOCTL Demo](demo.png)
+![IOCTL demo](demo.png)
 
-**Note:** This is a demo. The WRITE uses a hardcoded fake address; it may fail. To use it properly, change the target process and use a valid address.
+The WRITE example uses a hardcoded address and may fail. Set a valid address for your own test process before using it.
 
-## Structure
+Enable Windows test mode before loading the driver with `sc create` / `sc start`. Outside test mode, the driver needs signing or a custom loader.
 
-| Folder        | Content                                    |
-|---------------|--------------------------------------------|
-| `kernel_mode/`| Kernel driver (driver.cpp, headers.h)      |
-| `user_mode/`  | User-mode app (main.cpp, headers.h)        |
+NOTE: THIS IS FOR EDUCATIONAL PURPOSES ONLY. Test in a VM.
 
-## Loading the driver
-
-**Option 1** — Test Mode (`sc create` / `sc start`)
-
-**Option 2** — KDMapper or custom loader
-
-MAKE SURE TO ENABLE TEST MODE TO TEST THIS PROJECT. IF YOU WISH TO USE IT OUTSIDE TEST MODE, USE YOUR CUSTOM DRIVER LOADER OR SIGN THE DRIVER.
-
-**NOTE: THIS IS FOR EDUCATIONAL PURPOSES ONLY.**
-
-For more detailed technical analysis and study notes
+This is part of my Windows internals studies. More notes on [my blog](https://cnthigu.github.io/).
