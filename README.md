@@ -1,6 +1,6 @@
 # Windows Kernel IOCTL Demo
 
-Communicate with a Windows kernel driver and read/write process memory through IOCTLs
+Communicate with a Windows kernel driver and read/write process memory through IOCTLs.
 
 ## How does it work?
 
