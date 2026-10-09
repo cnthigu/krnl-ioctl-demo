@@ -1,0 +1,50 @@
+;
+; kernel_mode.inf
+;
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System
+ClassGuid   = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider    = %ManufacturerName%
+CatalogFile = kernel_mode.cat
+DriverVer   =
+PnpLockdown = 1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+kernel_mode.sys = 1,,
+
+[Manufacturer]
+%ManufacturerName% = Standard,NT$ARCH$.10.0...16299
+
+[Standard.NT$ARCH$.10.0...16299]
+%kernel_mode.DeviceDesc% = kernel_mode_Device, Root\kernel_mode
+
+[kernel_mode_Device.NT]
+CopyFiles = File_Copy
+
+[File_Copy]
+kernel_mode.sys
+
+[kernel_mode_Device.NT.Services]
+AddService = kernel_mode,%SPSVCINST_ASSOCSERVICE%, kernel_mode_Service_Inst
+
+[kernel_mode_Service_Inst]
+DisplayName    = %kernel_mode.SVCDESC%
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %13%\kernel_mode.sys
+
+[Strings]
+SPSVCINST_ASSOCSERVICE = 0x00000002
+ManufacturerName = "<Your manufacturer name>"
+DiskName = "kernel_mode Installation Disk"
+kernel_mode.DeviceDesc = "kernel_mode Device"
+kernel_mode.SVCDESC = "kernel_mode Service"
