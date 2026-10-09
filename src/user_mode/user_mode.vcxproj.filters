@@ -5,15 +5,24 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Shared Files">
+      <UniqueIdentifier>{D99C77D7-546B-4D6B-BD4D-202A4B94A4DD}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="driver_client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Includes.h">
+    <ClInclude Include="driver_client.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\ioctl.h">
+      <Filter>Shared Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
