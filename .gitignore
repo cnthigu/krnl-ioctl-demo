@@ -9,6 +9,7 @@
 *.VC.VC.opendb
 
 # Build outputs (WDK / driver)
+/build/
 **/x64/
 **/ARM64/
 **/Debug/
@@ -23,7 +24,7 @@
 *.recipe
 *.Build.CppClean.log
 
-# INF gerado/alterado pelo build (mantém o .inf da pasta do projeto)
+# Generated INF files (keep the project INF)
 x64/**/*.inf
 ARM64/**/*.inf
 
